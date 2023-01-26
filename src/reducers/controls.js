@@ -47,6 +47,7 @@ export const getDefaultControlsState = () => {
     search: null,
     strain: null,
     geneLength: {},
+    treatments: {},
     mutType: defaultMutType,
     temporalConfidence: { exists: false, display: false, on: false },
     layout: defaults.layout,

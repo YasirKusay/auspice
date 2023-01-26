@@ -314,6 +314,14 @@ const modifyStateViaMetadata = (state, metadata) => {
       if (gene !== nucleotide_gene) {
         state.geneLength[gene] /= 3;
       }
+      if (gene !== "nuc" && metadata.genomeAnnotations[gene].hasOwnProperty('treatments')) { // only read things that have an "treatment" property
+        state.treatments[gene] = metadata.genomeAnnotations[gene].treatments;
+      }
+      // alert("Treatment")
+      // alert(typeof state.treatments[gene])
+      // alert(Object.keys(state.treatments[gene]))
+      // alert(state.treatments[gene]["treatmentA"])
+      // alert(state.treatments[gene]["treatmentB"])
     }
   } else {
     console.warn("JSONs did not include `genome_annotations`");
