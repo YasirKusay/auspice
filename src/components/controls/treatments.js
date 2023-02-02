@@ -31,13 +31,18 @@ class Treatments extends React.Component {
         positionSelected: ""
       };
 
+      // alert("Pre treatments")
+      // alert(Object.keys(this.props.geneMap)[0])
+      // alert(JSON.stringify(this.props.treatments, null, 2))
+
       const gS = Object.keys(this.props.geneMap)[0]
+      // alert(Object.keys(this.props.treatments[gS]))
       const tS = Object.keys(this.props.treatments[gS])[0]
 
-      alert("Treatments")
-      alert(gS)
-      alert(tS)
-      alert(this.props.treatments[gS][tS])
+      // alert("Treatments")
+      // alert(gS)
+      // alert(tS)
+      // alert(this.props.treatments[gS][tS])
 
       this.state = this.newState({
         geneSelected: Object.keys(this.props.geneMap)[0],
@@ -68,46 +73,20 @@ class Treatments extends React.Component {
     }
 
   
-    // State from the outside world enters via props.
-    // Invoked just before rendering occurs
-    componentWillReceiveProps(nextProps) {
-      alert("componentWillReceiveProps()")
-      alert(JSON.stringify(this.props.colorBy))
-      alert(JSON.stringify(nextProps.colorBy))
-      alert(JSON.stringify(this.state))
-
-      if (this.props.colorBy !== nextProps.colorBy) {
-        if (isColorByGenotype(nextProps.colorBy)) {
-          const genotype = decodeColorByGenotype(nextProps.colorBy);
-          alert(JSON.stringify(genotype))
-
-          if (genotype) {
-
-            const oldGenotype = this.state.geneSelected 
-            const oldTreatment = this.state.treatmentSelected
-
-            // no need to manually replace treatment, unless gene was changed
-            this.replaceState({
-              geneSelected: genotype.gene,
-              positionSelected: genotype.positions.join(","),
-              treatmentSelected: this.state.geneSelected === oldGenotype ? oldTreatment : Object.keys(nextProps.treatments[oldGenotype])[0]
-            });
-          }
-        }
-      }
-      alert(JSON.stringify(this.state))
-    }
+    // no need to include componentWillReceiveProps, nothing
+    // needs to be changed if props are changed since it uses local state
   
     // called immediately after updating occurs (except for when initially loading)
     // Our internal state is published back to the outside world when it changes.
     componentDidUpdate() {
-      alert("componentDidUpdate()")
+      // alert("componentDidUpdate()")
 
       // we do not want to dispatch a change when a user selects a different gene
       // we would like to give them a chance to select a gene first
 
       // Only dispatch a change to the app's colorBy if we have a
       // fully-specified genotype (gene and position).
+      // the below conditino ensures this
       if (this.state.geneSelected && this.state.positionSelected !== "") {
         const genotype = encodeColorByGenotype({
           gene: this.state.geneSelected,
@@ -126,15 +105,15 @@ class Treatments extends React.Component {
     
     // called when state/props changed
     shouldComponentUpdate(nextProps, nextState) {
-      alert("shouldComponentUpdate")
-      alert(this.state.treatmentSelected)
-      alert(nextState.treatmentSelected)
+      // alert("shouldComponentUpdate")
+      // alert(this.state.treatmentSelected)
+      // alert(nextState.treatmentSelected)
       if (this.state.geneSelected !== nextState.geneSelected) {
         return true
       } else if (this.state.treatmentSelected !== nextState.treatmentSelected) {
         return true
       }
-      alert("false")
+      // alert("false")
       return false;
 
       /*
@@ -152,6 +131,9 @@ class Treatments extends React.Component {
       analyticsControlsEvent(`color-by-${name}`);
       // changeColourBy is the redux behaviour
       // it gets passed the genes + positions, enables changing of the display
+      // it appearts that colour-by received the colour by prop when dispatched
+      // which triggers its componentWillReceiveProps
+      alert("treatment change colour by")
       this.props.dispatch(changeColorBy(colorBy));
     }
   
@@ -160,12 +142,12 @@ class Treatments extends React.Component {
     }, 400);
   
     getTreatmentOptions() {
-      alert(this.props.treatments[this.state.geneSelected])
+      // alert(this.props.treatments[this.state.geneSelected])
       const options = [];
       if (this.props.treatments[this.state.geneSelected]) {
-        alert("HEHE")
-        alert(this.state.geneSelected)
-        alert(this.props.treatments[this.state.geneSelected])
+        // alert("HEHE")
+        // alert(this.state.geneSelected)
+        // alert(this.props.treatments[this.state.geneSelected])
         Object.keys(this.props.treatments[this.state.geneSelected]).forEach((treat) => options.push({value: treat, label: treat}));
       }
       return options;
@@ -177,9 +159,9 @@ class Treatments extends React.Component {
       const currTreatmentOptions = this.getTreatmentOptions();
       const currGeneSelected = this.state.geneSelected
 
-      alert("treatmentSelect()")
-      alert(this.state.treatmentSelected)
-      alert(JSON.stringify(currTreatmentOptions.filter(({value}) => value === this.state.treatmentSelected)))
+      // alert("treatmentSelect()")
+      // alert(this.state.treatmentSelected)
+      // alert(JSON.stringify(currTreatmentOptions.filter(({value}) => value === this.state.treatmentSelected)))
     
       return (
         <div style={styles.base} id="viewTreaments">
@@ -193,8 +175,8 @@ class Treatments extends React.Component {
             isSearchable
             isMulti={false}
             onChange={(opt) => {
-              alert("treatment change detected")
-              alert(opt.value)
+              // alert("treatment change detected")
+              // alert(opt.value)
               this.setState({ 
                 treatmentSelected: opt.value,
                 positionSelected: this.props.treatments[currGeneSelected][opt.value]
@@ -220,9 +202,10 @@ class Treatments extends React.Component {
       };
     }
   
-    getGtGeneOptions() {
+    getGeneOptions() {
       const options = [];
       if (this.props.treatments) {
+        // gets the proteins that have a "treatments" section in the input json
         Object.keys(this.props.treatments).forEach((prot) => options.push({value: prot, label: prot}));
       }
       return options;
@@ -231,10 +214,10 @@ class Treatments extends React.Component {
     render() {
       const styles = this.getStyles();
   
-      const gtGeneOptions = this.getGtGeneOptions();
+      const gtGeneOptions = this.getGeneOptions();
 
-      alert("render()")
-      alert(JSON.stringify(gtGeneOptions.filter(({value}) => value === this.state.geneSelected)))
+      // alert("render()")
+      // alert(JSON.stringify(gtGeneOptions.filter(({value}) => value === this.state.geneSelected)))
     
   
       return (
