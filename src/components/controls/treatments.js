@@ -37,7 +37,7 @@ class Treatments extends React.Component {
 
       const gS = Object.keys(this.props.geneMap)[0]
       // alert(Object.keys(this.props.treatments[gS]))
-      const tS = Object.keys(this.props.treatments[gS])[0]
+      // const tS = Object.keys(this.props.treatments[gS])[0]
 
       // alert("Treatments")
       // alert(gS)
@@ -133,7 +133,7 @@ class Treatments extends React.Component {
       // it gets passed the genes + positions, enables changing of the display
       // it appearts that colour-by received the colour by prop when dispatched
       // which triggers its componentWillReceiveProps
-      alert("treatment change colour by")
+      // alert("treatment change colour by")
       this.props.dispatch(changeColorBy(colorBy));
     }
   
@@ -221,26 +221,31 @@ class Treatments extends React.Component {
     
   
       return (
-        <div style={styles.base} id="viewGenesForTreatment">
-          <CustomSelect
-            name="viewGeneAvailableForTreatment"
-            id="viewGeneAvailableForTreatment"
-            placeholder="gene…"
-            value={gtGeneOptions.filter(({value}) => value === this.state.geneSelected)}
-            options={gtGeneOptions}
-            isClearable={false}
-            isSearchable
-            isMulti={false}
-            onChange={(opt) => {
-              this.setState({ geneSelected: opt.value,
-                treatmentSelected: "",
-                positionSelected: ""
-              });
-            }}
-          />
-          <div>
-            {this.treatmentSelect()}
+        <div>
+          {Object.keys(this.props.treatments).length > 0 ?
+          <div style={styles.base} id="viewGenesForTreatment">
+            <CustomSelect
+              name="viewGeneAvailableForTreatment"
+              id="viewGeneAvailableForTreatment"
+              placeholder="gene…"
+              value={gtGeneOptions.filter(({value}) => value === this.state.geneSelected)}
+              options={gtGeneOptions}
+              isClearable={false}
+              isSearchable
+              isMulti={false}
+              onChange={(opt) => {
+                this.setState({ geneSelected: opt.value,
+                  treatmentSelected: "",
+                  positionSelected: ""
+                });
+              }}
+            />
+            <div>
+              {this.treatmentSelect()}
+            </div>
           </div>
+          : null
+          }
         </div>
         );
     }
