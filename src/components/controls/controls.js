@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 
 import ColorBy, {ColorByInfo} from "./color-by";
+import Treatment, {TreatmentInfo} from "./treatments";
 import DateRangeInputs, {DateRangeInfo} from "./date-range-inputs";
 import AnimationControls from "./animation-controls";
 import ChooseExplodeAttr from "./choose-explode-attr";
@@ -39,6 +40,9 @@ function Controls({mapOn, frequenciesOn, measurementsOn, mobileDisplay}) {
 
       <AnnotatedHeader title={t("sidebar:Color By")} tooltip={ColorByInfo} mobile={mobileDisplay}/>
       <ColorBy />
+
+      <AnnotatedHeader title={t("sidebar:Treatment")} tooltip={TreatmentInfo} mobile={mobileDisplay}/>
+      <Treatment />
 
       <AnnotatedHeader title={t("sidebar:Filter Data")} tooltip={FilterInfo} mobile={mobileDisplay}/>
       <FilterData measurementsOn={measurementsOn} />
